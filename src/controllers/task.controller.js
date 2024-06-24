@@ -48,7 +48,7 @@ class TaskController {
             const allowedUpdates = ["isCompleted"];
             const requestedUpdates = object.keys(taskData);
 
-            for (upadate of requestedUpdates) {
+            for (const upadate of requestedUpdates) {
                 if (allowedUpdates.includes(update)) {
                     taskToUpdate[update] = taskData[update];
                 } else {
@@ -60,6 +60,23 @@ class TaskController {
             return this.res.status(200).send(taskToUpdate);
         } catch (error) {
             return this.res.status(500).send(error.message);
+        }
+    }
+    async delete() {
+        try {
+            const taskId = this.req.params.id;
+            const taskToDelete = await TaskModel.findById(taskId);
+            if (!taskToDelete) {
+                return this.res
+                    .status(500)
+                    .send("Essa tarefa não foi encontrada.");
+            }
+
+            const deletedTask = await TaskModel.findByIdAndDelete(taskId);
+
+            this.res.status(200).send("Delete!");
+        } catch (error) {
+            this.res.status(500).send(error.message);
         }
     }
 }
