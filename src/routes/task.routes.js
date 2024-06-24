@@ -6,22 +6,15 @@ const TaskModel = require("../models/task.model");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-    return new TaskController(req, res).getTasks();
+    return new TaskController(req, res).getAll();
 });
 
 router.get("//:id", async (req, res) => {
-    return new TaskController(req, res).getTaskById(req.params.id);
+    return new TaskController(req, res).getkById();
 });
 
 router.post("/", async (req, res) => {
-    try {
-        const newTask = new TaskModel(req.body);
-
-        await newTask.save();
-        res.status(201).send(newTask);
-    } catch (error) {
-        res.status(404).send(error.message);
-    }
+    return new TaskController(req, res).create();
 });
 
 router.patch("//:id", async (req, res) => {
